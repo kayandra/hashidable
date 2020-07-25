@@ -1,0 +1,77 @@
+<?php
+
+namespace Kayandra\Hashidable;
+
+trait Hashidable
+{
+    /**
+     * Finds a model by the hashid
+     *
+     * @param string $hash
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public static function findByHashid(string $hash)
+    {
+        $static = new static();
+
+        return $static->find($static->hashidableEncoder()->decode($hash));
+    }
+
+    /**
+     * Finds a model by the hashid or fails
+     *
+     * @param string $hash
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public static function findByHashidOrFail(string $hash)
+    {
+        $static = new static();
+
+        return $static->findOrFail($static->hashidableEncoder()->decode($hash));
+    }
+
+    /**
+     * Getter for the calling model to return the generated hashid
+     *
+     * @return string
+     */
+    public function getHashidAttribute($value)
+    {
+        return $this->hashidableEncoder()->encode($this->getKey());
+    }
+
+    /** @inheritDoc */
+    public function getRouteKey()
+    {
+        return $this->hashid;
+    }
+
+    /** @inheritDoc */
+    public function resolveRouteBinding($hash, $field = null)
+    {
+        return $this->where(
+            $this->getKeyName(),
+            $this->hashidableEncoder()->decode($hash)
+        )->firstOrFail();
+    }
+
+    /**
+     * Generates a SHA512 salt based on the current model name
+     *
+     * @return string
+     */
+    protected function hashidableSalt()
+    {
+        return hash('sha512', get_called_class());
+    }
+
+    /**
+     * Hashid Encoder-decoder
+     *
+     * @return \Kayandra\Hashidable\Encoder
+     */
+    final private function hashidableEncoder()
+    {
+        return new Encoder($this->hashidableSalt());
+    }
+}

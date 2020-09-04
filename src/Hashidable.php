@@ -56,22 +56,12 @@ trait Hashidable
     }
 
     /**
-     * Generates a SHA512 salt based on the current model name
-     *
-     * @return string
-     */
-    protected function hashidableSalt()
-    {
-        return hash('sha512', get_called_class());
-    }
-
-    /**
      * Hashid Encoder-decoder
      *
      * @return \Kayandra\Hashidable\Encoder
      */
     final private function hashidableEncoder()
     {
-        return new Encoder($this->hashidableSalt());
+        return new Encoder(get_called_class());
     }
 }

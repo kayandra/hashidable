@@ -2,9 +2,10 @@
 
 namespace Kayandra\Hashidable\Tests;
 
+use Illuminate\Support\Str;
 use Kayandra\Hashidable\Encoder;
-use Kayandra\Hashidable\Tests\Models\Model;
 use Illuminate\Support\Facades\Route;
+use Kayandra\Hashidable\Tests\Models\Model;
 
 class HashidableTest extends TestCase
 {
@@ -14,7 +15,7 @@ class HashidableTest extends TestCase
 	{
 		parent::setUp();
 
-		$this->encoder = new Encoder(hash('sha512', Model::class));
+		$this->encoder = new Encoder(Model::class);
 
 		Route::middleware('bindings')->get('/hashidable/{model}', [
 			'as' => 'model',
@@ -56,5 +57,76 @@ class HashidableTest extends TestCase
 			$this->encoder->encode($model->id),
 			$model->getRouteKey()
 		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider hashLengthDataProvider
+	 */
+	public function change_hash_length($length)
+	{
+		$model = factory(Model::class)->create();
+
+		config(['hashidable.length' => $length]);
+
+		$this->assertEquals($length, mb_strlen($model->hashid));
+	}
+
+	public function hashLengthDataProvider()
+	{
+		return array_map(fn () => [mt_rand(8, 36)], array_fill(0, 10, 1));
+	}
+
+	/** @test */
+	public function can_prefix_hash()
+	{
+		$model = factory(Model::class)->create();
+
+		config(['hashidable.prefix' => 'edit']);
+
+		$this->assertTrue(Str::startsWith($model->hashid, 'edit'));
+	}
+
+	/** @test */
+	public function prefixes_does_not_affect_decoding()
+	{
+		$model = factory(Model::class)->create();
+
+		config(['hashidable.prefix' => 'edit']);
+
+		$this->assertEquals(1, $this->encoder->decode($model->hashid));
+	}
+
+	/** @test */
+	public function can_suffix_hash()
+	{
+		$model = factory(Model::class)->create();
+
+		config(['hashidable.suffix' => 'end']);
+
+		$this->assertTrue(Str::endsWith($model->hashid, 'end'));
+	}
+
+	/** @test */
+	public function suffixes_does_not_affect_decoding()
+	{
+		$model = factory(Model::class)->create();
+
+		config(['hashidable.suffix' => 'edit']);
+
+		$this->assertEquals(1, $this->encoder->decode($model->hashid));
+	}
+
+	/** @test */
+	public function can_change_hash_separator()
+	{
+		$model = factory(Model::class)->create();
+
+		config(['hashidable.prefix' => 'edit']);
+		config(['hashidable.suffix' => 'end']);
+		config(['hashidable.separator' => '_']);
+
+		$this->assertTrue(Str::startsWith($model->hashid, 'edit_'));
+		$this->assertTrue(Str::endsWith($model->hashid, '_end'));
 	}
 }

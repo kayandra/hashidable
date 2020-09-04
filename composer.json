@@ -30,7 +30,7 @@
         }
     },
     "scripts": {
-        "test": "phpunit"
+        "test": "phpunit --color=always"
     },
     "minimum-stability": "alpha"
 }

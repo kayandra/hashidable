@@ -2,6 +2,7 @@
 
 namespace Kayandra\Hashidable\Tests;
 
+use Kayandra\Hashidable\HashidableServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 use Orchestra\Database\ConsoleServiceProvider;
 
@@ -20,6 +21,9 @@ abstract class TestCase extends Orchestra
 
     protected function getPackageProviders($app)
     {
-        return [ConsoleServiceProvider::class];
+        return [
+            ConsoleServiceProvider::class,
+            HashidableServiceProvider::class,
+        ];
     }
 }

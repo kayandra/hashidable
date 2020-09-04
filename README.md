@@ -1,6 +1,6 @@
 # Hashidable
 
-> Hashidable uses [hashids](https://hashids.org/) to obfuscate Laravel route ids.
+> Hashidable uses [hashids](https://hashids.org/) to encrypt Laravel route ids.
 
 ## Installation
 
@@ -63,16 +63,6 @@ public function show(Request $request, User $user)
   <summary>Where are the generated hashes stored?</summary>
 
   Hashidable does not touch the database to store any sort of metadata. What it does instead is use an internal encoder/decoder to dynamically calculate the hashes.
-</details>
-
-<details>
-  <summary>Will this improve security?</summary>
-
-  No. hashids are meant to provide obscurity in the URL.
-
-  Relying on _obscurity for security is not advisable_, this package is meant for aesthetics.
-
-  If you like YouTube style URLs, then by all means use this package.
 </details>
 
 ## License

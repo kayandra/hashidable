@@ -28,6 +28,13 @@
             "Kayandra\\Hashidable\\Tests\\": "tests/"
         }
     },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Kayandra\\Hashidable\\HashidableServiceProvider"
+            ]
+        }
+    },
     "scripts": {
         "test": "phpunit --color=always"
     },

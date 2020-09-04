@@ -11,8 +11,7 @@
     ],
     "require": {
         "php": ">=7.0",
-        "hashids/hashids": "^4.0",
-        "illuminate/database": "^7.21"
+        "hashids/hashids": "^4.0"
     },
     "require-dev": {
         "orchestra/testbench": "^5.3",
@@ -32,5 +31,5 @@
     "scripts": {
         "test": "phpunit --color=always"
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "stable"
 }

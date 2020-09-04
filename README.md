@@ -57,6 +57,41 @@ public function show(Request $request, User $user)
 }
 ```
 
+## Configuring
+
+First, publish the config file using:
+
+```
+php artisan vendor:publish --tag=hashidable.config
+```
+
+The available configuration options are:
+
+```php
+return [
+  /**
+   * Length of the generated hashid.
+   */
+  'length' => 16,
+
+  /**
+   * Prefix attached to the generated hash.
+   */
+  'prefix' => '',
+
+  /**
+   * Suffix attached to the generated hash.
+   */
+  'suffix' => '',
+
+  /**
+   * If a prefix of suffix is defined, we use this as a separator
+   * between the prefix/suffix.
+   */
+  'separator' => '-',
+];
+```
+
 ## FAQs
 
 <details>

@@ -27,6 +27,6 @@ class HashidableServiceProvider extends ServiceProvider
     {
         $this->publishes([
             dirname(__DIR__).'/config/hashidable.php' => config_path('hashidable.php'),
-        ]);
+        ], 'hashidable.config');
     }
 }

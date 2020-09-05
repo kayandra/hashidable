@@ -64,7 +64,8 @@ trait Hashidable
     {
         $interfaces = class_implements(get_called_class());
         $exists = array_key_exists(HashidableConfigInterface::class, $interfaces);
-        $config = $exists ? $this->hashidableConfig() : config('hashidable');
+        $custom = $exists ? $this->hashidableConfig() : [];
+        $config = array_merge(config('hashidable'), $custom);
 
         return new Encoder(get_called_class(), $config);
     }

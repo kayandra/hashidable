@@ -8,11 +8,14 @@ class Encoder
 {
     private Hashids $encoder;
 
-    public function __construct($salt)
+    private array $config = [];
+
+    public function __construct($salt, $config = [])
     {
+        $this->config = $config;
         $this->encoder = new Hashids(
             $this->hashSaltFromString($salt),
-            config('hashidable.length')
+            $this->config['length']
         );
     }
 
@@ -42,7 +45,7 @@ class Encoder
 
     public function hashSaltFromString(string $salt)
     {
-        $input = array_fill(0, config('hashidable.length'), $salt);
+        $input = array_fill(0, $this->config['length'], $salt);
 
         return hash('sha512', serialize($input));
     }
@@ -50,13 +53,13 @@ class Encoder
     private function wrap(string $hash)
     {
         $array = [$hash];
-        $separator = config('hashidable.separator');
+        $separator = $this->config['separator'];
 
-        if ($prefix = config('hashidable.prefix')) {
+        if ($prefix = $this->config['prefix']) {
             array_unshift($array, $prefix, $separator);
         }
 
-        if ($suffix = config('hashidable.suffix')) {
+        if ($suffix = $this->config['suffix']) {
             array_push($array, $separator, $suffix);
         }
 
@@ -65,13 +68,13 @@ class Encoder
 
     private function unwrap(string $hash)
     {
-        $separator = config('hashidable.separator');
+        $separator = $this->config['separator'];
 
-        if ($prefix = config('hashidable.prefix')) {
+        if ($prefix = $this->config['prefix']) {
             $hash = ltrim($hash, $prefix . $separator);
         }
 
-        if ($suffix = config('hashidable.suffix')) {
+        if ($suffix = $this->config['suffix']) {
             $hash = rtrim($hash, $separator . $suffix);
         }
 

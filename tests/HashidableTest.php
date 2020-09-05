@@ -6,6 +6,7 @@ use Illuminate\Support\Str;
 use Kayandra\Hashidable\Encoder;
 use Illuminate\Support\Facades\Route;
 use Kayandra\Hashidable\Tests\Models\Model;
+use Kayandra\Hashidable\Tests\Models\ModelConfig;
 
 class HashidableTest extends TestCase
 {
@@ -15,7 +16,7 @@ class HashidableTest extends TestCase
 	{
 		parent::setUp();
 
-		$this->encoder = new Encoder(Model::class);
+		$this->encoder = new Encoder(Model::class, config('hashidable'));
 
 		Route::middleware('bindings')->get('/hashidable/{model}', [
 			'as' => 'model',
@@ -90,11 +91,12 @@ class HashidableTest extends TestCase
 	/** @test */
 	public function prefixes_does_not_affect_decoding()
 	{
-		$model = factory(Model::class)->create();
-
 		config(['hashidable.prefix' => 'edit']);
 
-		$this->assertEquals(1, $this->encoder->decode($model->hashid));
+		$model = factory(Model::class)->create();
+		$encoder = new Encoder(Model::class, config('hashidable'));
+
+		$this->assertEquals(1, $encoder->decode($model->hashid));
 	}
 
 	/** @test */
@@ -110,11 +112,12 @@ class HashidableTest extends TestCase
 	/** @test */
 	public function suffixes_does_not_affect_decoding()
 	{
+		config(['hashidable.suffix' => 'end']);
+
 		$model = factory(Model::class)->create();
+		$encoder = new Encoder(Model::class, config('hashidable'));
 
-		config(['hashidable.suffix' => 'edit']);
-
-		$this->assertEquals(1, $this->encoder->decode($model->hashid));
+		$this->assertEquals(1, $encoder->decode($model->hashid));
 	}
 
 	/** @test */
@@ -128,5 +131,23 @@ class HashidableTest extends TestCase
 
 		$this->assertTrue(Str::startsWith($model->hashid, 'edit_'));
 		$this->assertTrue(Str::endsWith($model->hashid, '_end'));
+	}
+
+	/** @test */
+	public function configuration_per_model_instance()
+	{
+		$model = factory(ModelConfig::class)->create();
+
+		$this->assertEquals(64, mb_strlen($model->hashid));
+	}
+
+	/** @test */
+	public function model_config_superceeds_global_config()
+	{
+		$model = factory(ModelConfig::class)->create();
+
+		config(['hashidable.length' => 128]);
+
+		$this->assertEquals(64, mb_strlen($model->hashid));
 	}
 }

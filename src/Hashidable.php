@@ -62,6 +62,10 @@ trait Hashidable
      */
     final private function hashidableEncoder()
     {
-        return new Encoder(get_called_class());
+        $interfaces = class_implements(get_called_class());
+        $exists = array_key_exists(HashidableConfigInterface::class, $interfaces);
+        $config = $exists ? $this->hashidableConfig() : config('hashidable');
+
+        return new Encoder(get_called_class(), $config);
     }
 }

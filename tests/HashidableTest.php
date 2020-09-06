@@ -150,4 +150,16 @@ class HashidableTest extends TestCase
 
 		$this->assertEquals(64, mb_strlen($model->hashid));
 	}
+
+	/** @test */
+	public function can_change_character_set()
+	{
+		$model = factory(Model::class)->create();
+
+		$this->assertFalse(ctype_xdigit($model->hashid));
+
+		config(['hashidable.charset' => 'ABCDEF1234567890']);
+
+		$this->assertTrue(ctype_xdigit($model->hashid));
+	}
 }

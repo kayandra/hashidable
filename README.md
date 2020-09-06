@@ -69,26 +69,31 @@ The available configuration options are:
 
 ```php
 return [
-  /**
-   * Length of the generated hashid.
-   */
-  'length' => 16,
+    /**
+     * Length of the generated hashid.
+     */
+    'length' => 16,
 
-  /**
-   * Prefix attached to the generated hash.
-   */
-  'prefix' => '',
+    /**
+     * Character set used to generate the hashids.
+     */
+    'charset' => 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890',
 
-  /**
-   * Suffix attached to the generated hash.
-   */
-  'suffix' => '',
+    /**
+     * Prefix attached to the generated hash.
+     */
+    'prefix' => '',
 
-  /**
-   * If a prefix of suffix is defined, we use this as a separator
-   * between the prefix/suffix.
-   */
-  'separator' => '-',
+    /**
+     * Suffix attached to the generated hash.
+     */
+    'suffix' => '',
+
+    /**
+     * If a prefix of suffix is defined, we use this as a separator
+     * between the prefix/suffix.
+     */
+    'separator' => '-',
 ];
 ```
 

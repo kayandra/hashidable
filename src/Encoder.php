@@ -15,7 +15,8 @@ class Encoder
         $this->config = $config;
         $this->encoder = new Hashids(
             $this->hashSaltFromString($salt),
-            $this->config['length']
+            $this->config['length'],
+            $this->config['charset']
         );
     }
 

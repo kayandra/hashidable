@@ -7,6 +7,11 @@ return [
     'length' => 16,
 
     /**
+     * Character set used to generate the hashids.
+     */
+    'charset' => 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890',
+
+    /**
      * Prefix attached to the generated hash.
      */
     'prefix' => '',

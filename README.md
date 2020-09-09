@@ -4,7 +4,7 @@
 
 ## Installation
 
-*Note: This package is built to work with Laravel versions greater than 7. It may work in older version, but this has not been tested.*
+_Note: This package is built to work with Laravel versions greater than 7. It may work in older version, but this has not been tested._
 
 ```
 composer require kayandra/hashidable
@@ -97,12 +97,26 @@ return [
 ];
 ```
 
+### Per-Model Configuration
+
+You can also extend the global configuration on a per-model basis. To do this, your model should implement the `Kayandra\Hashidable\HashidableConfigInterface` and define the `hashidableConfig()` method on the model.
+
+This method returns an array or subset of options similar to the global configuration.
+
+```php
+    public function hashidableConfig()
+    {
+        return ['prefix' => 'app'];
+    }
+```
+
 ## FAQs
 
 <details>
   <summary>Where are the generated hashes stored?</summary>
 
-  Hashidable does not touch the database to store any sort of metadata. What it does instead is use an internal encoder/decoder to dynamically calculate the hashes.
+Hashidable does not touch the database to store any sort of metadata. What it does instead is use an internal encoder/decoder to dynamically calculate the hashes.
+
 </details>
 
 ## License

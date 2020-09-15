@@ -1,6 +1,6 @@
 # Hashidable
 
-> Hashidable uses [hashids](https://hashids.org/) to encrypt Laravel route ids.
+> Hashidable uses [hashids](https://hashids.org/) to obfuscate Laravel route ids.
 
 ## Installation
 

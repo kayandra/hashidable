@@ -40,7 +40,10 @@ trait Hashidable
     {
         $static = new static();
 
-        return $static->where($static->hashidableEncoder()->decode($hash));
+        return $static->where(
+            $static->getKeyName(),
+            $static->hashidableEncoder()->decode($hash)
+        );
     }
 
     /**

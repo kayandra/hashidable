@@ -31,6 +31,19 @@ trait Hashidable
     }
 
     /**
+     * Finds a model by the hashid or fails
+     *
+     * @param string $hash
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public static function whereHashid(string $hash)
+    {
+        $static = new static();
+
+        return $static->where($static->hashidableEncoder()->decode($hash));
+    }
+
+    /**
      * Getter for the calling model to return the generated hashid
      *
      * @return string

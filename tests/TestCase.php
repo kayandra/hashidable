@@ -19,8 +19,12 @@ abstract class TestCase extends Orchestra
         $this->withFactories(__DIR__ . '/database/factories');
     }
 
-    protected function getPackageProviders($app)
-    {
+    /**
+     * @param \Illuminate\Foundation\Application $app
+     *
+     * @return string[]
+     */
+    protected function getPackageProviders($app): array {
         return [
             ConsoleServiceProvider::class,
             HashidableServiceProvider::class,

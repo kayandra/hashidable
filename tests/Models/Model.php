@@ -3,9 +3,9 @@
 namespace Kayandra\Hashidable\Tests\Models;
 
 use Kayandra\Hashidable\Hashidable;
-use Illuminate\Database\Eloquent\Model as LaravelModel;
+use Illuminate\Database\Eloquent\Model as ModelAlias;
 
-class Model extends LaravelModel
+class Model extends ModelAlias
 {
     use Hashidable;
 }

@@ -2,7 +2,7 @@
 
 namespace Kayandra\Hashidable;
 
-interface HashidableConfigInterface
+interface HashidableConfig
 {
     public function hashidableConfig();
 }

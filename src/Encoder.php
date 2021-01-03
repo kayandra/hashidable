@@ -8,13 +8,13 @@ class Encoder
 {
     private Hashids $encoder;
 
-    private array $config = [];
+    private array $config;
 
     public function __construct($salt, $config = [])
     {
         $this->config = $config;
         $this->encoder = new Hashids(
-            $this->hashSaltFromString($salt),
+            $this->modelSalt($salt),
             $this->config['length'],
             $this->config['charset']
         );
@@ -26,8 +26,7 @@ class Encoder
      * @param integer $id
      * @return string
      */
-    public function encode(int $id)
-    {
+    public function encode(int $id): string {
         return $this->wrap($this->encoder->encode($id));
     }
 
@@ -37,23 +36,24 @@ class Encoder
      * @param string $hash
      * @return integer
      */
-    public function decode(string $hash)
-    {
+    public function decode(string $hash): int {
         $hashArray = $this->encoder->decode($this->unwrap($hash));
 
         return reset($hashArray);
     }
 
-    public function hashSaltFromString(string $salt)
-    {
-        $moreSalt = $salt. '\\' . ($this->config['salt'] ?? '');
-        $input = array_fill(0, $this->config['length'], $moreSalt);
+    /**
+     * @param string $salt
+     *
+     * @return string
+     */
+    public function modelSalt(string $salt): string {
+        $input = sprintf("%s\\%s", $salt, $this->config['salt'] ?? '');
 
-        return hash('sha512', serialize($input));
+        return hash('sha512', $input);
     }
 
-    private function wrap(string $hash)
-    {
+    private function wrap(string $hash): string {
         $array = [$hash];
         $separator = $this->config['separator'];
 
@@ -68,8 +68,7 @@ class Encoder
         return implode('', $array);
     }
 
-    private function unwrap(string $hash)
-    {
+    private function unwrap(string $hash): string {
         $separator = $this->config['separator'];
 
         if ($prefix = $this->config['prefix']) {

@@ -10,7 +10,7 @@ use Kayandra\Hashidable\Tests\Models\ModelConfig;
 
 class HashidableTest extends TestCase
 {
-	private $encoder;
+	private Encoder $encoder;
 
 	protected function setUp(): void
 	{
@@ -73,8 +73,7 @@ class HashidableTest extends TestCase
 		$this->assertEquals($length, mb_strlen($model->hashid));
 	}
 
-	public function hashLengthDataProvider()
-	{
+	public function hashLengthDataProvider(): array {
 		return array_map(fn () => [mt_rand(8, 36)], array_fill(0, 10, 1));
 	}
 

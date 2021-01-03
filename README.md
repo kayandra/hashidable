@@ -70,6 +70,12 @@ The available configuration options are:
 ```php
 return [
     /**
+     * Ensures hashids are unique to project. Preferrably, use a value
+     * that won't change during the project's lifetime.
+     */
+    'salt' => hash('sha256', 'chitty chitty bang bang'),
+
+    /**
      * Length of the generated hashid.
      */
     'length' => 16,
@@ -99,15 +105,15 @@ return [
 
 ### Per-Model Configuration
 
-You can also extend the global configuration on a per-model basis. To do this, your model should implement the `Kayandra\Hashidable\HashidableConfigInterface` and define the `hashidableConfig()` method on the model.
+You can also extend the global configuration on a per-model basis. To do this, your model should implement the `Kayandra\Hashidable\HashidableConfig` and define the `hashidableConfig()` method on the model.
 
 This method returns an array or subset of options similar to the global configuration.
 
-```php
-    public function hashidableConfig()
-    {
-        return ['prefix' => 'app'];
-    }
+```php 
+public function hashidableConfig()
+{
+    return ['prefix' => 'app'];
+}
 ```
 
 ## FAQs
@@ -115,7 +121,7 @@ This method returns an array or subset of options similar to the global configur
 <details>
   <summary>Where are the generated hashes stored?</summary>
 
-Hashidable does not touch the database to store any sort of metadata. What it does instead is use an internal encoder/decoder to dynamically calculate the hashes.
+Hashidable does not touch the database to store any sort of metadata. What it does instead is use an internal encoder/decoder to dynamically calculate the hashes from the models' id.
 
 </details>
 

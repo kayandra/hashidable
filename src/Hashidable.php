@@ -34,13 +34,13 @@ trait Hashidable
      * Finds a model by the hashid or fails
      *
      * @param string $hash
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return \Illuminate\Database\Eloquent\Builder
      */
     public static function whereHashid(string $hash)
     {
         $static = new static();
 
-        return $static->where($static->hashidableEncoder()->decode($hash));
+        return $static->whereId($static->hashidableEncoder()->decode($hash));
     }
 
     /**

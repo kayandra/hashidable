@@ -34,13 +34,14 @@ trait Hashidable
      * Finds a model by the hashid or fails
      *
      * @param string $hash
-     * @return \Illuminate\Database\Eloquent\Model
+     * @param string $columnId By default 'id' but can be diferent some developers
+     * @return \Illuminate\Database\Eloquent\Builder
      */
-    public static function whereHashid(string $hash)
+    public static function whereHashid(string $hash, string $columnId = 'id')
     {
         $static = new static();
 
-        return $static->where($static->hashidableEncoder()->decode($hash));
+        return $static->where($columnId, $static->hashidableEncoder()->decode($hash));
     }
 
     /**

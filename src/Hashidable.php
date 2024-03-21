@@ -37,7 +37,7 @@ trait Hashidable
      * @param string $columnId By default 'id' but can be diferent some developers
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public static function whereHashid(string $hash, string $columnId = 'id')
+    public static function scopeWhereHashid(string $hash, string $columnId = 'id')
     {
         $static = new static();
 
